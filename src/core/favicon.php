@@ -1,0 +1,6 @@
+<?php
+
+if (isset($_GET['favicon'])) {
+	header('Content-Type: image/png');
+	die(base64_decode('iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAAZUlEQVR4Ae3WMRZAQBAE0T4MuDxwL4B85ADMZlWd739voxHtIspUaZJ93KJG2fXzg+znhiuikjms0mmTCzDrNPOZAwDwMScAAAAAAAAAYAl9eDUuQBH2+O0U353v84/PKfbPE9EKDwA//zt0Le0AAAAASUVORK5CYII='));
+}

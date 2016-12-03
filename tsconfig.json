@@ -1,0 +1,22 @@
+{
+	"compileOnSave": true,
+	"compilerOptions": {
+		"module": "system",
+		"newLine": "lf",
+		"noEmitOnError": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"removeComments": true,
+		"preserveConstEnums": true,
+		"strictNullChecks": true,
+		"target": "es5",
+		"outFile": "build/modules.js"
+	},
+	"include": [
+		"lib/jquery.d.ts",
+		"src/*/*.ts"
+	]
+}

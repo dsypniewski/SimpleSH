@@ -1,0 +1,81 @@
+div.window.fileBrowser {
+  .canvas {
+    margin: 8px;
+  }
+  
+  .container {
+    overflow-y: scroll;
+    overflow-x: auto;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  input.filterInput {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    width: 90%;
+    max-width: 400px;
+    padding: 5px 8px;
+    border: 1px solid $accent-color;
+    outline: none;
+    background-color: #181818;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  tbody tr:focus {
+    background-color: white;
+  }
+
+  tbody tr.directory {
+    cursor: pointer;
+  }
+
+  tbody tr:hover,
+  tbody tr.active {
+    background-color: $dark-primary;
+  }
+
+  th.permissions {
+    width: 110px;
+    min-width: 110px;
+  }
+
+  th.user {
+    width: 120px;
+    min-width: 120px;
+  }
+
+  th.group {
+    width: 120px;
+    min-width: 120px;
+  }
+
+  th.modification_time {
+    width: 250px;
+    min-width: 250px;
+  }
+
+  th.size {
+    width: 110px;
+    min-width: 110px;
+  }
+
+  td.size {
+    text-align: right;
+  }
+
+  tbody td {
+    padding: 8px 10px;
+  }
+
+}
