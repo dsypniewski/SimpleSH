@@ -25,7 +25,7 @@ $accent-hover: #005000;
 }
 
 * {
-  color: $accent-color;
+  color: #c1c1c1;
   font-size: 1em;
   white-space: pre;
   font-family: Consolas, monaco, monospace;
@@ -112,7 +112,7 @@ div.new-window-menu {
   top: 30px;
   left: 0;
   z-index: 100;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: $dark-primary;
   border: 1px solid $accent-color;
   display: inline-block;
 
@@ -122,7 +122,7 @@ div.new-window-menu {
   }
 
   a:hover {
-    background-color: $primary-color;
+    background-color: $dark-primary-hover;
     cursor: pointer;
   }
 }
@@ -143,7 +143,7 @@ div.windows-container {
     overflow: hidden;
     background-color: $primary-color;
     z-index: 1;
-    border: 1px solid $accent-hover;
+    border: 1px solid #424242;
 
     div.menu {
       position: absolute;
@@ -151,9 +151,8 @@ div.windows-container {
       left: 0;
       right: 0;
       height: 30px;
-      background-color: $dark-primary;
+      background-color: #424242;
       line-height: 30px;
-      border-bottom: 1px solid $accent-color;
       padding: 0 10px;
     }
 
@@ -168,7 +167,11 @@ div.windows-container {
 
   div.window.active {
     z-index: 100;
-    border: 1px solid $accent-color;
+    border: 1px solid #313131;
+
+    div.menu {
+      background-color: #313131;
+    }
   }
 
   div.window.maximized {
