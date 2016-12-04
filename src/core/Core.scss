@@ -24,6 +24,14 @@ $accent-hover: #005000;
   background-color: #202020;
 }
 
+@mixin no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 * {
   color: #c1c1c1;
   font-size: 1em;
@@ -146,6 +154,7 @@ div.windows-container {
     border: 1px solid #424242;
 
     div.menu {
+      @include no-select;
       position: absolute;
       top: 0;
       left: 0;
@@ -154,6 +163,7 @@ div.windows-container {
       background-color: #424242;
       line-height: 30px;
       padding: 0 10px;
+      cursor: default;
     }
 
     div.canvas {
