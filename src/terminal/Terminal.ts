@@ -344,15 +344,14 @@ class Terminal extends Module {
 	handleKeyboardEvent(helper: KeyboardEventHelper): void {
 		let event = helper.getEvent();
 		if (helper.isKeyPrintable() ||
-			(helper.onlyCtrlModifier && (
-				event.key === 'Backspace' ||
-				event.key === 'Delete' ||
-				(event.ctrlKey && event.key === 'v') ||
-				(event.ctrlKey && event.key === 'a')
-			))
+			(helper.onlyCtrlModifierAllowed && (event.key === 'Backspace' || event.key === 'Delete')) ||
+			(helper.onlyCtrlModifier && (event.key === 'v' || event.key === 'a')) ||
+			(helper.noModifiers && (event.key === 'Home' || event.key === 'End'))
 		) {
+			// Printable characters and command input actions - focus on input
 			this.commandInput.focus();
-		} else if (helper.onlyCtrlModifier && event.ctrlKey && event.key === 'c') {
+		} else if (helper.onlyCtrlModifier && event.key === 'c') {
+			// Ctrl + C
 			if (this.dynamicOutputReference !== null) {
 				event.preventDefault();
 				this.breakCommandExecution();
@@ -362,49 +361,51 @@ class Terminal extends Module {
 				this.clearCommandInput();
 			}
 		} else if (helper.noModifiers && event.key === 'Tab') {
+			// Tab - autocomplete
 			this.handleAutocomplete();
 			event.preventDefault();
 		} else if (helper.noModifiers && event.key === 'Enter') {
+			// Enter - execute command
 			this.handleCommand();
 			event.preventDefault();
 		} else if (helper.noModifiers && helper.isEscapeKey()) {
+			// Esc - clear command line
 			this.clearCommandInput();
 			event.preventDefault();
+		} else if (helper.noModifiers && helper.isArrowUpKey()) {
+			// Up - move history cursor forward (older command)
+			this.moveHistoryCursor(1, true);
+			event.preventDefault();
 		} else if (helper.onlyCtrlModifier && helper.isArrowUpKey()) {
-			if (event.ctrlKey) {
-				this.moveHistoryCursor(this.history.length, false);
-			} else {
-				this.moveHistoryCursor(1, true);
-			}
+			// Ctrl + Up - move history cursor to end (first command)
+			this.moveHistoryCursor(this.history.length, false);
+			event.preventDefault();
+		} else if (helper.noModifiers && helper.isArrowDownKey()) {
+			// Down - move history cursor backward (newer command)
+			this.moveHistoryCursor(-1, true);
 			event.preventDefault();
 		} else if (helper.onlyCtrlModifier && helper.isArrowDownKey()) {
-			if (event.ctrlKey) {
-				this.moveHistoryCursor(null, false);
-			} else {
-				this.moveHistoryCursor(-1, true);
-			}
+			// Ctrl + Down - move history cursor to current command (not yet executed)
+			this.moveHistoryCursor(null, false);
 			event.preventDefault();
 		} else if (helper.onlyCtrlModifier && event.key === 'Home') {
-			if (!event.ctrlKey) {
-				this.commandInput.focus();
-			} else {
-				this.scrollConsoleToTop(true);
-				event.preventDefault();
-			}
+			// Ctrl + Home - scroll console to top
+			this.scrollConsoleToTop(true);
+			event.preventDefault();
 		} else if (helper.onlyCtrlModifier && event.key === 'End') {
-			if (!event.ctrlKey) {
-				this.commandInput.focus();
-			} else {
-				this.scrollConsoleToBottom(true);
-				event.preventDefault();
-			}
+			// Ctrl + End - scroll console to bottom
+			this.scrollConsoleToBottom(true);
+			event.preventDefault();
 		} else if (helper.noModifiers && event.key === 'PageUp') {
+			// PageUp - scroll console one page up
 			this.scrollConsolePage(-1, true);
 			event.preventDefault();
 		} else if (helper.noModifiers && event.key === 'PageDown') {
+			// PageDown - scroll console one page down
 			this.scrollConsolePage(1, true);
 			event.preventDefault();
 		} else if (helper.noModifiers && helper.isScrollLockKey()) {
+			// ScrollLock - toggle console scroll lock
 			this.toggleScrollLock();
 			event.preventDefault();
 		}

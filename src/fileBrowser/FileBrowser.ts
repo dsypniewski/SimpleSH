@@ -55,9 +55,11 @@ class FileBrowser extends Module {
 
 	handleKeyboardEvent(helper: KeyboardEventHelper): void {
 		let event = helper.getEvent();
-		if (helper.isEscapeKey()) {
+		if (helper.noModifiers && helper.isEscapeKey()) {
+			// Esc - clear directory listing filter
 			this.clearFilter();
-		} else if (helper.isArrowUpKey() || helper.isArrowDownKey()) {
+		} else if (helper.noModifiers && (helper.isArrowUpKey() || helper.isArrowDownKey())) {
+			// Up / Down - move selection between listing items
 			event.preventDefault();
 			let focused = this.container.find('tr.active');
 			let rows = this.container.children('tbody').children();
@@ -73,9 +75,11 @@ class FileBrowser extends Module {
 				}
 				rows.eq(index).addClass('active');
 			}
-		} else if (event.key === 'Enter') {
+		} else if (helper.noModifiers && event.key === 'Enter') {
+			// Enter - 'click' on active item
 			$('tr.active').click();
-		} else if (event.key === '/' && this.isFilterInputHidden()) {
+		} else if (helper.noModifiers && event.key === '/' && this.isFilterInputHidden()) {
+			// / - show filter popup
 			event.preventDefault();
 			this.showFilterInput();
 		}

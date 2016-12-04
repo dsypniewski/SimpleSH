@@ -2,13 +2,25 @@ class KeyboardEventHelper {
 	protected readonly event: JQueryKeyEventObject;
 	public readonly noModifiers: boolean;
 	public readonly onlyCtrlModifier: boolean;
+	public readonly onlyAltModifier: boolean;
+	public readonly onlyShiftModifier: boolean;
 	public readonly onlyMetaModifier: boolean;
+	public readonly onlyCtrlModifierAllowed: boolean;
+	public readonly onlyAltModifierAllowed: boolean;
+	public readonly onlyShiftModifierAllowed: boolean;
+	public readonly onlyMetaModifierAllowed: boolean;
 
 	constructor(event: JQueryKeyEventObject) {
 		this.event = event;
 		this.noModifiers = (!event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey);
-		this.onlyCtrlModifier = (!event.altKey && !event.shiftKey && !event.metaKey);
-		this.onlyMetaModifier = (!event.ctrlKey && !event.altKey && !event.shiftKey);
+		this.onlyCtrlModifier =  (event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey);
+		this.onlyAltModifier =   (!event.ctrlKey && event.altKey && !event.shiftKey && !event.metaKey);
+		this.onlyShiftModifier = (!event.ctrlKey && !event.altKey && event.shiftKey && !event.metaKey);
+		this.onlyMetaModifier =  (!event.ctrlKey && !event.altKey && !event.shiftKey && event.metaKey);
+		this.onlyCtrlModifierAllowed = (!event.altKey && !event.shiftKey && !event.metaKey);
+		this.onlyAltModifierAllowed = (!event.ctrlKey && !event.shiftKey && !event.metaKey);
+		this.onlyShiftModifierAllowed = (!event.ctrlKey && !event.altKey && !event.metaKey);
+		this.onlyMetaModifierAllowed = (!event.ctrlKey && !event.altKey && !event.shiftKey);
 	}
 
 	public isKeyPrintable(): boolean {

@@ -151,10 +151,12 @@ class WindowManager {
 				this.getCurrentWindow().getModule().onWindowFocus();
 			}
 		}
-		if (event.ctrlKey && event.key === 'Insert') {
+		if (helper.onlyCtrlModifier && event.key === 'Insert') {
+			// Ctrl + Insert - opens new window popup
 			event.preventDefault();
 			this.showNewWindowPopup();
 		} else if (event.ctrlKey && event.altKey && (helper.isArrowLeftKey() || helper.isArrowRightKey())) {
+			// Ctrl + Alt + Left arrow / Right arrow - switch between windows
 			event.preventDefault();
 			if (this.hasWindows() && this.hasActiveWindow()) {
 				let position = $.inArray(this.getCurrentWindowId(), this.windowsOrder);
@@ -170,18 +172,22 @@ class WindowManager {
 				this.switchWindow(windowId);
 			}
 		} else if (event.ctrlKey && event.altKey && helper.isFunctionKey()) {
+			// Ctrl + Alt + F1..F12 - switch between windows
 			event.preventDefault();
 			let windowId: string = this.taskBar.children('.tab').eq(event.keyCode - 112).data('windowId');
 			this.switchWindow(windowId);
 		} else if (this.hasWindows()) {
 			if (this.hasActiveWindow()) {
-				if (event.ctrlKey && event.key === 'q') {
+				if (helper.onlyCtrlModifier && event.key === 'q') {
+					// Ctrl + Q - close window
 					event.preventDefault();
 					this.removeWindow(this.getCurrentWindowId());
-				} else if (!event.ctrlKey && event.key === 'F1') {
+				} else if (helper.noModifiers && event.key === 'F1') {
+					// F1 - show help
 					event.preventDefault();
 					this.getCurrentWindow().getModule().showHelp();
-				} else if (event.shiftKey && helper.isArrowLeftKey()) {
+				} else if (helper.onlyShiftModifier && helper.isArrowLeftKey()) {
+					// Shift + Left arrow - stick window to left side
 					event.preventDefault();
 					let halfWidth: number = this.windowsContainer.width() / 2;
 					let height: number = this.windowsContainer.height();
@@ -190,7 +196,8 @@ class WindowManager {
 					container.css('top', 0);
 					container.outerWidth(halfWidth);
 					container.outerHeight(height);
-				} else if (event.shiftKey && helper.isArrowRightKey()) {
+				} else if (helper.onlyShiftModifier && helper.isArrowRightKey()) {
+					// Shift + Right arrow - stick window to right side
 					event.preventDefault();
 					let halfWidth = this.windowsContainer.width() / 2;
 					let height: number = this.windowsContainer.height();
@@ -199,10 +206,12 @@ class WindowManager {
 					container.css('top', 0);
 					container.outerWidth(halfWidth);
 					container.outerHeight(height);
-				} else if (event.shiftKey && helper.isArrowUpKey()) {
+				} else if (helper.onlyShiftModifier && helper.isArrowUpKey()) {
+					// Shift + Up arrow - maximize window
 					event.preventDefault();
 					this.getCurrentWindow().getContainer().addClass('maximized');
-				} else if (event.shiftKey && helper.isArrowDownKey()) {
+				} else if (helper.onlyShiftModifier && helper.isArrowDownKey()) {
+					// Shift + Down arrow - revert maximize window
 					event.preventDefault();
 					let halfHeight: number = this.windowsContainer.height() / 2;
 					let container = this.getCurrentWindow().getContainer();
