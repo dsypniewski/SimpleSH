@@ -33,13 +33,13 @@ class Terminal_Bash extends Terminal_Sh implements Terminal_AutocompleteInterfac
 		$output = $this->getAutocompleteResult($commandPart, $cwd, false);
 		if (count($output) === 1 and $output[0] !== $commandPart) {
 			// Complete command
-			$completedPart = $output[0];
+			$completedPart = trim($output[0]);
 		} else {
 			// Double tab is required
 			$output = $this->getAutocompleteResult($commandPart, $cwd, true);
 			if (count($output) === 1) {
 				// Complete command
-				$completedPart = preg_replace('#(y(\[K|\s+)?)$#', '', reset($output));
+				$completedPart = preg_replace('#(y(\[K|\s+)?)$#u', '', reset($output));
 			} else if (count($output) > 1) {
 				// Possible completions
 				$firstLine = array_shift($output);
@@ -78,7 +78,7 @@ class Terminal_Bash extends Terminal_Sh implements Terminal_AutocompleteInterfac
 		if ($doubleTab) {
 			$completionPart .= '$\'\\t\\ty\\27\'';
 		} else {
-			$completionPart .= '$\'\\t\'';
+			$completionPart .= '$\'\\t\\27\'';
 		}
 		$autocompleteCommand = "echo {$completionPart} | TERM=dumb PS1= COLUMNS=200 {$this->getInterpreterPath()} -i -n 2>&1 | head -n-1";
 		$autocompleteCommand = "{$this->getInterpreterPath()} -c {$this->escapeShellArg($autocompleteCommand)}";
