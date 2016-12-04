@@ -452,7 +452,7 @@ class Terminal extends Module {
 		}
 		this.dynamicOutputRequestFinished = false;
 		let data = {
-			'module': this.getModuleName(),
+			'module': this.getModuleKey(),
 			'reference': this.dynamicOutputReference
 		};
 		let _this = this;
