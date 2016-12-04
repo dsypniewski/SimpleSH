@@ -39,7 +39,7 @@ class Terminal extends Module {
 	}
 
 	// Base implementation methods required by WindowManager
-	public build() {
+	public build(): JQuery {
 		this.outputWrapper.append(this.outputBuffer);
 
 		let table = $('<table/>').append(
@@ -62,33 +62,33 @@ class Terminal extends Module {
 		return 'tty' + this.ttyId;
 	}
 
-	public showHelp() {
+	public showHelp(): void {
 	}
 
-	public onWindowFocus() {
+	public onWindowFocus(): void {
 		this.updateStatus();
 	}
 
-	protected updateStatus() {
+	protected updateStatus(): void {
 		let _OFS = function (status: boolean) {
 			return (status ? ' ON' : 'OFF');
 		};
 		this.windowManager.setStatus('SL: ' + _OFS(this.scrollLock) + ' CL: ' + _OFS(this.windowManager.getCapsLockStatus()) + ' DO: ' + _OFS(this.dynamicOutputEnabled));
 	}
 
-	updateTitle(title: string) {
+	updateTitle(title: string): void {
 		this.windowManager.updateTitle(this.windowId, title);
 	}
 
 	// History manipulation methods
-	protected addToHistory(command: string) {
+	protected addToHistory(command: string): void {
 		if (this.history[0] === command) {
 			return;
 		}
 		this.history.unshift(command);
 	}
 
-	protected moveHistoryCursor(position: number|null, relative: boolean) {
+	protected moveHistoryCursor(position: number|null, relative: boolean): void {
 		if (relative) {
 			position += this.historyPosition;
 		}
@@ -122,22 +122,22 @@ class Terminal extends Module {
 	}
 
 	// Console manipulation methods
-	protected appendToConsole(data: string) {
+	protected appendToConsole(data: string): void {
 		let text: Text = new Text();
 		text.appendData(data + "\n");
 		this.outputBuffer.append(text);
 		this.scrollConsoleToBottom();
 	}
 
-	protected appendCommandToConsole(command: string) {
+	protected appendCommandToConsole(command: string): void {
 		this.appendToConsole(this.getPrompt() + command);
 	}
 
-	protected appendStatusToConsole(status: string|number) {
+	protected appendStatusToConsole(status: string|number): void {
 		this.appendToConsole("[" + status + "]\n");
 	}
 
-	protected clearConsole() {
+	protected clearConsole(): void {
 		this.outputBuffer.html('');
 	}
 
@@ -161,33 +161,33 @@ class Terminal extends Module {
 	}
 
 	// Command input
-	getCommand() {
+	getCommand(): string {
 		return this.commandInput.val();
 	}
 
-	setCommand(command: string) {
+	setCommand(command: string): void {
 		this.commandInput.val(command);
 	}
 
-	clearCommandInput() {
+	clearCommandInput(): void {
 		this.setCommand('');
 		this.historyPosition = -1;
 		this.currentCommand = null;
 	}
 
-	isCommandInputEmpty() {
+	isCommandInputEmpty(): boolean {
 		return this.getCommand().length === 0;
 	}
 
-	disableCommandInput() {
+	disableCommandInput(): void {
 		this.commandInput.prop('readonly', true);
 	}
 
-	enableCommandInput() {
+	enableCommandInput(): void {
 		this.commandInput.prop('readonly', false);
 	}
 
-	isCommandInputDisabled() {
+	isCommandInputDisabled(): boolean {
 		return this.commandInput.prop('readonly') === true;
 	}
 
@@ -197,23 +197,23 @@ class Terminal extends Module {
 		return node.selectionEnd > node.selectionStart ? node.selectionEnd : node.selectionStart;
 	}
 
-	moveCommandInputCursorToEnd() {
+	moveCommandInputCursorToEnd(): void {
 		this.moveCommandInputCursorToPosition(this.getCommand().length);
 	}
 
-	moveCommandInputCursorToPosition(position: number) {
+	moveCommandInputCursorToPosition(position: number): void {
 		let node = <HTMLInputElement>this.commandInput[0];
 		node.setSelectionRange(position, position);
 		this.commandInput.focus();
 	}
 
 // Current directory
-	setCurrentDirectory(cwd: string) {
+	setCurrentDirectory(cwd: string): void {
 		this.currentDirectoryInput.val(cwd);
 	}
 
 // Prompt
-	setPrompt(prompt: string) {
+	setPrompt(prompt: string): void {
 		this.prompt.text(prompt);
 	}
 
@@ -221,17 +221,16 @@ class Terminal extends Module {
 		return this.prompt.text();
 	}
 
-	updatePrompt() {
+	updatePrompt(): void {
 		// TODO
 	}
 
 // Shell
-	//noinspection JSUnusedGlobalSymbols
-	addShell(_key: string, _type: string, _interpreterPath: string) {
+	addShell(_key: string, _type: string, _interpreterPath: string): void {
 		// TODO
 	}
 
-	changeShell(shell: string) {
+	changeShell(shell: string): void {
 		let shells = this.windowManager.getModuleData<ObjectDict>(this, 'shells', {});
 		if (shells.hasOwnProperty(shell)) {
 			this.shellClass.val(shells[shell]['shellClass']);
@@ -245,7 +244,7 @@ class Terminal extends Module {
 	}
 
 // Simple command handling
-	handleCommand() {
+	handleCommand(): void {
 		if (this.isCommandInputEmpty() || this.isCommandInputDisabled()) {
 			return;
 		}
@@ -261,7 +260,7 @@ class Terminal extends Module {
 		}
 	}
 
-	handleSpecialCommands() {
+	handleSpecialCommands(): boolean {
 		let command = this.getCommand().trim();
 		if (command === 'clear') {
 			this.clearConsole();
@@ -280,18 +279,18 @@ class Terminal extends Module {
 		return true;
 	}
 
-	sendCommand() {
+	sendCommand(): void {
 		let data = this.form.serialize();
 		if (this.dynamicOutputEnabled) {
 			data += "&dynamicOutput=1";
 		}
 		let _this = this;
-		$.post(this.windowManager.getHandlerUrl(), data, function (response) {
+		$.post(this.windowManager.getHandlerUrl(), data, function (response: ObjectDict) {
 			_this.handleResponse(response);
 		}, 'json');
 	}
 
-	handleResponse(response: {[key: string]: string}) {
+	handleResponse(response: ObjectDict): void {
 		if (this.dynamicOutputEnabled && response.hasOwnProperty('reference')) {
 			this.setDynamicOutputReference(response['reference']);
 			return;
@@ -313,19 +312,19 @@ class Terminal extends Module {
 	}
 
 // Autocomplete
-	handleAutocomplete() {
+	handleAutocomplete(): void {
 		if (this.isCommandInputEmpty()) {
 			return;
 		}
 		let cursorPosition = this.getCommandInputCursorPosition();
 		let data = this.form.serialize() + "&cursorPosition=" + cursorPosition + "&autocomplete=1";
 		let _this = this;
-		$.post(this.windowManager.getHandlerUrl(), data, function (response) {
+		$.post(this.windowManager.getHandlerUrl(), data, function (response: ObjectDict) {
 			_this.handleAutocompleteResponse(response)
 		}, 'json');
 	}
 
-	handleAutocompleteResponse(response: {'caretPosition': number, 'returnValue': string, 'result': string, 'command': string}) {
+	handleAutocompleteResponse(response: ObjectDict): void {
 		if (parseInt(response['returnValue']) !== 0) {
 			return;
 		}
@@ -342,7 +341,7 @@ class Terminal extends Module {
 	}
 
 	// Keyboard events handler
-	handleKeyboardEvent(helper: KeyboardEventHelper) {
+	handleKeyboardEvent(helper: KeyboardEventHelper): void {
 		let event = helper.getEvent();
 		if (helper.isKeyPrintable() ||
 			(helper.onlyCtrlModifier && (
@@ -411,23 +410,23 @@ class Terminal extends Module {
 		}
 	}
 
-	toggleScrollLock() {
+	toggleScrollLock(): void {
 		this.scrollLock = !this.scrollLock;
 		this.updateStatus();
 	}
 
 // Dynamic output
-	enableDynamicOutput() {
+	enableDynamicOutput(): void {
 		this.dynamicOutputEnabled = true;
 		this.updateStatus();
 	}
 
-	disableDynamicOutput() {
+	disableDynamicOutput(): void {
 		this.dynamicOutputEnabled = false;
 		this.updateStatus();
 	}
 
-	setDynamicOutputReference(reference: string) {
+	setDynamicOutputReference(reference: string): void {
 		this.disableCommandInput();
 		this.dynamicOutputReference = reference;
 		let _this = this;
@@ -436,7 +435,7 @@ class Terminal extends Module {
 		}, 500);
 	}
 
-	clearDynamicOutputReference() {
+	clearDynamicOutputReference(): void {
 		if (this.dynamicOutputInterval !== null) {
 			clearInterval(this.dynamicOutputInterval);
 			this.dynamicOutputInterval = null;
@@ -447,7 +446,7 @@ class Terminal extends Module {
 		this.enableCommandInput();
 	}
 
-	handleDynamicOutputRequest() {
+	handleDynamicOutputRequest(): void {
 		if (!this.dynamicOutputRequestFinished || this.dynamicOutputReference === null) {
 			return;
 		}
@@ -457,12 +456,12 @@ class Terminal extends Module {
 			'reference': this.dynamicOutputReference
 		};
 		let _this = this;
-		$.post(this.windowManager.getHandlerUrl(), data, function (response: {[key: string]: string}) {
+		$.post(this.windowManager.getHandlerUrl(), data, function (response: ObjectDict) {
 			_this.handleDynamicOutputResponse(response);
 		}, 'json');
 	}
 
-	handleDynamicOutputResponse(response: {[key: string]: string}) {
+	handleDynamicOutputResponse(response: ObjectDict): void {
 		if (response.hasOwnProperty('result')) {
 			this.appendToConsole(response['result']);
 		}
@@ -476,7 +475,7 @@ class Terminal extends Module {
 		this.dynamicOutputRequestFinished = true;
 	}
 
-	breakCommandExecution() {
+	breakCommandExecution(): void {
 		if (this.dynamicOutputReference === null) {
 			return;
 		}
@@ -486,7 +485,7 @@ class Terminal extends Module {
 			'kill': true
 		};
 		let _this = this;
-		$.post(this.windowManager.getHandlerUrl(), data, function (response: {[key: string]: string}) {
+		$.post(this.windowManager.getHandlerUrl(), data, function (response: ObjectDict) {
 			_this.appendToConsole("Process " + response['pid'] + " killed\n");
 			_this.clearDynamicOutputReference();
 			_this.clearCommandInput();

@@ -14,7 +14,7 @@ class FileBrowser extends Module {
 		this.positions = {};
 	}
 
-	build() {
+	build(): JQuery {
 		this.container = $('<table/>');
 		this.container.append(
 			$('<thead/>').append(
@@ -55,9 +55,9 @@ class FileBrowser extends Module {
 
 	handleKeyboardEvent(helper: KeyboardEventHelper): void {
 		let event = helper.getEvent();
-		if (event.keyCode == 27) {
+		if (helper.isEscapeKey()) {
 			this.clearFilter();
-		} else if (event.keyCode === 38 || event.keyCode === 40) { // Up and Down arrow
+		} else if (helper.isArrowUpKey() || helper.isArrowDownKey()) {
 			event.preventDefault();
 			let focused = this.container.find('tr.active');
 			let rows = this.container.children('tbody').children();
@@ -66,16 +66,16 @@ class FileBrowser extends Module {
 			} else {
 				let index = focused.index();
 				focused.removeClass('active');
-				if (event.keyCode === 38) {
+				if (helper.isArrowUpKey()) {
 					index -= 1;
 				} else {
 					index += 1;
 				}
 				rows.eq(index).addClass('active');
 			}
-		} else if (event.keyCode === 13) {
+		} else if (event.key === 'Enter') {
 			$('tr.active').click();
-		} else if (event.keyCode === 191 && this.isFilterInputHidden()) {
+		} else if (event.key === '/' && this.isFilterInputHidden()) {
 			event.preventDefault();
 			this.showFilterInput();
 		}
@@ -133,17 +133,17 @@ class FileBrowser extends Module {
 			'directory': directory
 		};
 		let _this = this;
-		$.post(this.windowManager.getHandlerUrl(), data, function (response: {'data': Object, 'directory': string}) {
+		$.post(this.windowManager.getHandlerUrl(), data, function (response: ObjectDict) {
 			_this.handleResponse(response);
 		}, 'json');
 	}
 
-	handleResponse(response: {'data': Object, 'directory': string}): void {
+	handleResponse(response: ObjectDict): void {
 		if (!response.hasOwnProperty('data')) {
 			return;
 		}
 		let body = $('<tbody/>');
-		$.each(response['data'], function (_index: number, value: {[key: string]: string}) {
+		$.each(response['data'], function (_index: number, value: ObjectDict) {
 			body.append(
 				$('<tr/>').append(
 					$('<td/>').text(value['mode_string'])

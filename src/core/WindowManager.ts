@@ -142,7 +142,7 @@ class WindowManager {
 		this.newWindowMenu.hide();
 	}
 
-	protected handleKeyboardEvent(event: JQueryKeyEventObject) {
+	protected handleKeyboardEvent(event: JQueryKeyEventObject): void {
 		let helper: KeyboardEventHelper = new KeyboardEventHelper(event);
 		let capsLock = helper.getModifierState('CapsLock');
 		if (this.capsLockStatus !== capsLock) {
@@ -337,7 +337,7 @@ class WindowManager {
 		return this.currentWindowId;
 	}
 
-	protected hasActiveWindow() {
+	protected hasActiveWindow(): boolean {
 		return this.currentWindowId !== null;
 	}
 }

@@ -2,14 +2,14 @@ class TranslationManager {
 
 	protected translations: TranslationSet = {};
 	
-	add(translations: TranslationSet) {
+	add(translations: TranslationSet): void {
 		let _this = this;
 		$.each(translations, function (key: string, value: string) {
 			_this.translations[key] = value;
 		});
 	}
 
-	get(message: string, ...argv: string[]) {
+	get(message: string, ...argv: string[]): string {
 		if (this.translations.hasOwnProperty(message)) {
 			message = this.translations[message];
 		}
