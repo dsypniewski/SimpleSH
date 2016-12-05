@@ -31,9 +31,9 @@ class Terminal_Bash extends Terminal_Sh implements Terminal_AutocompleteInterfac
 
 		// Check if single tab has results
 		$output = $this->getAutocompleteResult($commandPart, $cwd, false);
-		if (count($output) === 1 and $output[0] !== $commandPart) {
+		if (count($output) === 1 and trim($output[0]) !== $commandPart) {
 			// Complete command
-			$completedPart = trim($output[0]);
+			$completedPart = $output[0];
 		} else {
 			// Double tab is required
 			$output = $this->getAutocompleteResult($commandPart, $cwd, true);
@@ -74,22 +74,25 @@ class Terminal_Bash extends Terminal_Sh implements Terminal_AutocompleteInterfac
 	 */
 	protected function getAutocompleteResult($command, $cwd = null, $doubleTab = false)
 	{
-		$completionPart = $this->escapeShellArg($command);
+		$completionPart = $this->escapeShellArg("#($command");
 		if ($doubleTab) {
-			$completionPart .= '$\'\\t\\ty\\27\'';
+			$completionPart .= '$\'\\t\\ty\'';
 		} else {
-			$completionPart .= '$\'\\t\\27\'';
+			$completionPart .= '$\'\\t\'';
 		}
 		$autocompleteCommand = "echo {$completionPart} | TERM=dumb PS1= COLUMNS=200 {$this->getInterpreterPath()} -i -n 2>&1 | head -n-1";
 		$autocompleteCommand = "{$this->getInterpreterPath()} -c {$this->escapeShellArg($autocompleteCommand)}";
 		$output = self::_execute($autocompleteCommand, $cwd);
 		$output = str_replace(array("\x07", "\x00", "\x08", "\x1B"), '', rtrim($output, "\n"));
 		$output = PlatformTools::splitLines($output);
-		while (count($output) > 0 and mb_substr($output[0], 0, 5) == 'bash:') {
-			array_shift($output);
-		}
 		while (count($output) > 0 and strlen(trim(end($output))) === 0) {
 			array_pop($output);
+		}
+		if (count($output) > 0 and mb_strpos($output[0], '#(') === 0) {
+			$output[0] = mb_substr($output[0], 2);
+		}
+		if (count($output) > 1 and mb_strpos(end($output), '#(') === 0) {
+			$output[count($output) - 1] = mb_substr(end($output), 2);
 		}
 
 		return $output;
