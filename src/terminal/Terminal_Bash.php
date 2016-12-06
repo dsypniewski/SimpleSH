@@ -85,6 +85,9 @@ class Terminal_Bash extends Terminal_Sh implements Terminal_AutocompleteInterfac
 		$output = self::_execute($autocompleteCommand, $cwd);
 		$output = str_replace(array("\x07", "\x00", "\x08", "\x1B"), '', rtrim($output, "\n"));
 		$output = PlatformTools::splitLines($output);
+		while (count($output) > 0 and mb_substr($output[0], 0, 5) == 'bash:') {
+			array_shift($output);
+		}
 		while (count($output) > 0 and strlen(trim(end($output))) === 0) {
 			array_pop($output);
 		}
