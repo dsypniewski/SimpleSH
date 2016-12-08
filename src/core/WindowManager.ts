@@ -4,7 +4,7 @@ class WindowManager {
 	protected windowsOrder: string[] = [];
 	protected currentWindowId: string|null = null;
 	protected capsLockStatus: boolean = false;
-	protected dragWindow: WindowObject|null;
+	protected dragWindow: WindowObject|null = null;
 	protected dragOffsetX: number = 0;
 	protected dragOffsetY: number = 0;
 	protected readonly status: JQuery;
