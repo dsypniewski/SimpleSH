@@ -80,7 +80,7 @@ class Terminal_Bash extends Terminal_Sh implements Terminal_AutocompleteInterfac
 		} else {
 			$completionPart .= '$\'\\t\'';
 		}
-		$autocompleteCommand = "echo {$completionPart} | TERM=dumb PS1= COLUMNS=200 {$this->getInterpreterPath()} -i -n 2>&1 | head -n-1";
+		$autocompleteCommand = "echo {$completionPart} | TERM=dumb PS1= COLUMNS=200 {$this->getInterpreterPath()} -O interactive_comments -i -n 2>&1 | head -n-1";
 		$autocompleteCommand = "{$this->getInterpreterPath()} -c {$this->escapeShellArg($autocompleteCommand)}";
 		$output = self::_execute($autocompleteCommand, $cwd);
 		$output = str_replace(array("\x07", "\x00", "\x08", "\x1B"), '', rtrim($output, "\n"));
