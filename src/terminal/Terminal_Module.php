@@ -34,7 +34,14 @@ class Terminal_Module extends Module
 
 	public function handleRequest()
 	{
-		if (isset($_POST['reference'])) {
+		if (isset($_POST['terminal_id'])) {
+			$this->_shell->setTerminalId($_POST['terminal_id']);
+		}
+		if (isset($_POST['init'])) {
+			$result = $this->handleInitRequest();
+		} else if (isset($_POST['close']) and isset($_POST['terminal_id'])) {
+			$result = $this->handleCloseRequest();
+		} else if (isset($_POST['reference'])) {
 			if (isset($_POST['kill'])) {
 				$result = $this->handleKillDynamicOutputProcess($_POST['reference']);
 			} else {
@@ -222,6 +229,26 @@ class Terminal_Module extends Module
 		}
 
 		return $this->_shell->killDynamicOutputProcess($reference);
+	}
+
+	/**
+	 * @return Result
+	 */
+	protected function handleInitRequest()
+	{
+		$data = $this->_shell->initTerminal();
+		
+		return new Result($data);
+	}
+
+	/**
+	 * @return Result
+	 */
+	protected function handleCloseRequest()
+	{
+		$this->_shell->closeTerminal();
+		
+		return new Result(array('success' => 0));
 	}
 
 }

@@ -11,6 +11,7 @@ class Terminal extends Module {
 	protected readonly interpreterPath: JQuery;
 	protected readonly prompt: JQuery;
 	protected readonly ttyId: number;
+	protected readonly terminalIdInput: JQuery;
 	protected history: Array<string> = [];
 	protected historyPosition: number = -1;
 	protected currentCommand: string|null = null;
@@ -33,9 +34,19 @@ class Terminal extends Module {
 		this.currentDirectoryInput = $('<input/>').prop('type', 'hidden').prop('name', 'cwd').val(directory);
 		this.shellClass = $('<input/>').prop('type', 'hidden').prop('name', 'shellClass').val(shellClass);
 		this.interpreterPath = $('<input/>').prop('type', 'hidden').prop('name', 'interpreterPath').val(interpreterPath);
+		this.terminalIdInput = $('<input/>').prop('type', 'hidden').prop('name', 'terminal_id');
 		this.form = $('<form/>').addClass('command-form').prop('method', 'post');
 		this.prompt = $('<span/>').text(prompt);
 		this.ttyId = Terminal.nextId++;
+		
+		let _this = this;
+		let data = {
+			'module': this.getModuleKey(),
+			'init': 1
+		};
+		$.post(windowManager.getHandlerUrl(), data, function(response: ObjectDict) {
+			_this.terminalIdInput.val(response['terminal_id']);
+		}, 'json');
 	}
 
 	// Base implementation methods required by WindowManager
@@ -53,9 +64,19 @@ class Terminal extends Module {
 		this.form.append(this.currentDirectoryInput);
 		this.form.append(this.shellClass);
 		this.form.append(this.interpreterPath);
+		this.form.append(this.terminalIdInput);
 		this.form.append($('<input/>').prop('type', 'hidden').prop('name', 'module').val(this.getModuleKey()));
 
 		return $(this.outputWrapper).add(this.form);
+	}
+
+	public onExit(): void {
+		let data = {
+			'module': this.getModuleKey(),
+			'terminal_id': this.terminalIdInput.val(),
+			'close': 1
+		};
+		$.post(this.windowManager.getHandlerUrl(), data);
 	}
 
 	public getWindowTitle(): string {

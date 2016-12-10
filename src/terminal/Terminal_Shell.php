@@ -4,6 +4,8 @@ abstract class Terminal_Shell implements Terminal_ShellInterface
 {
 
 	protected $_interpreterPath = null;
+	protected $_terminalId = null;
+	protected $_environmentFilePath = null;
 
 	/**
 	 * @param string $path
@@ -72,6 +74,26 @@ abstract class Terminal_Shell implements Terminal_ShellInterface
 	}
 
 	/**
+	 * @param string $terminalId
+	 */
+	public function setTerminalId($terminalId)
+	{
+		if (!is_string($terminalId) or strlen($terminalId) === 0) {
+			return;
+		}
+		$this->_terminalId = $terminalId;
+
+		$tmpDir = PlatformTools::getWritableTmpDir();
+		if ($tmpDir === false) {
+			return;
+		}
+		$this->_environmentFilePath = $tmpDir . DIRECTORY_SEPARATOR . "terminal_env_{$this->_terminalId}";
+		if (!file_exists($this->_environmentFilePath)) {
+			touch($this->_environmentFilePath);
+		}
+	}
+
+	/**
 	 * @param string $command
 	 * @param null|string $cwd
 	 * @return Result
@@ -100,6 +122,24 @@ abstract class Terminal_Shell implements Terminal_ShellInterface
 		$result->setData('debug:real_command', $preparedCommand);
 
 		return $result;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function initTerminal()
+	{
+		return array(
+			'terminal_id' => uniqid('', true),
+		);
+	}
+
+	public function closeTerminal()
+	{
+		if ($this->_terminalId === null) {
+			return;
+		}
+		@unlink($this->_environmentFilePath);
 	}
 
 	/**
