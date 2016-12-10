@@ -6,6 +6,15 @@ class Result
 	protected $_data = array();
 
 	/**
+	 * Result constructor.
+	 * @param array $data
+	 */
+	public function __construct($data = array())
+	{
+		$this->_data = $data;
+	}
+
+	/**
 	 * @param string $result
 	 */
 	public function setResult($result)
