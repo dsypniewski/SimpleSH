@@ -1,0 +1,7 @@
+<phpunit bootstrap="./dev/autoloader.php">
+	<testsuites>
+		<testsuite name="SimpleSH Terminal module">
+			<directory>./dev/tests/terminal</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>
