@@ -3,6 +3,8 @@
 class Terminal_PHP extends Terminal_Shell
 {
 
+	const COMMAND_SEPARATOR = '; ';
+	
 	/**
 	 * @return array
 	 */
@@ -25,9 +27,14 @@ class Terminal_PHP extends Terminal_Shell
 	 */
 	protected function prepareCommand($command)
 	{
-		$command .= ' echo "\\n" . getcwd();';
+		$command = array(
+			rtrim($command, "\t\n\r\0\x0B; "),
+			'echo "\\n\\n" . getcwd()',
+		);
+		$this->beforePrepareCommandJoin($command);
+		$command = join(self::COMMAND_SEPARATOR, $command) . self::COMMAND_SEPARATOR;
 
-		return "{$this->getInterpreterPath()} -r {$this->escapeShellArg($command)}" . PlatformTools::getStatusCommandPart();
+		return "({$this->getInterpreterPath()} -r {$this->escapeShellArg($command)}) 2>&1" . PlatformTools::getStatusCommandPart();
 	}
 
 	/**

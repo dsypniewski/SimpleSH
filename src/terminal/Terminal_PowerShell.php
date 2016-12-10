@@ -3,6 +3,8 @@
 class Terminal_PowerShell extends Terminal_Shell
 {
 
+	const COMMAND_SEPARATOR = '; ';
+	
 	/**
 	 * @return array
 	 */
@@ -25,9 +27,17 @@ class Terminal_PowerShell extends Terminal_Shell
 	 */
 	protected function prepareCommand($command)
 	{
-		$command = "{$command}; Set-Variable status ([int]-not$?); Write-Host \"`n\"; (Get-Item -Path \".\\\" -Verbose).FullName; echo \$status;";
+		$command = array(
+			$command,
+			'Set-Variable status ([int]-not$?)',
+			'Write-Host "`n"',
+			'(Get-Item -Path ".\\" -Verbose).FullName',
+			'echo $status',
+		);
+		$this->beforePrepareCommandJoin($command);
+		$command = join(self::COMMAND_SEPARATOR, $command) . self::COMMAND_SEPARATOR;
 
-		return "powershell.exe -NoLogo -NonInteractive -InputFormat text -OutputFormat text -Command {$this->escapeShellArg($command)}";
+		return "{$this->getInterpreterPath()} -NoLogo -NonInteractive -InputFormat text -OutputFormat text -Command {$this->escapeShellArg($command)}";
 	}
 
 	/**

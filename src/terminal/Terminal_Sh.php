@@ -3,6 +3,8 @@
 class Terminal_Sh extends Terminal_DynamicOutputShell
 {
 
+	const COMMAND_SEPARATOR = '; ';
+	
 	/**
 	 * @return array
 	 */
@@ -25,8 +27,15 @@ class Terminal_Sh extends Terminal_DynamicOutputShell
 	 */
 	protected function prepareCommand($command)
 	{
-		$command = rtrim($command, "\t\n\r\0\x0B; ");
-		$command = "( {$command}; return_value=$?; echo; pwd; echo \$return_value ) 2>&1";
+		$command = array(
+			rtrim($command, "\t\n\r\0\x0B; "),
+			'return_value=$?',
+			'echo',
+			'pwd',
+			'echo $return_value',
+		);
+		$this->beforePrepareCommandJoin($command);
+		$command = '( ' . join(self::COMMAND_SEPARATOR, $command) . ' ) 2>&1';
 
 		return "{$this->getInterpreterPath()} -c {$this->escapeShellArg($command)}";
 	}

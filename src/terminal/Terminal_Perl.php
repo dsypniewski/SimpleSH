@@ -2,6 +2,8 @@
 
 class Terminal_Perl extends Terminal_Shell
 {
+	
+	const COMMAND_SEPARATOR = '; ';
 
 	/**
 	 * @return array
@@ -25,7 +27,16 @@ class Terminal_Perl extends Terminal_Shell
 	 */
 	protected function prepareCommand($command)
 	{
-		return "{$this->getInterpreterPath()} -e {$this->escapeShellArg($command)}" . PlatformTools::getStatusCommandPart();
+		$command = array(
+			'use Cwd',
+			rtrim($command, "\t\n\r\0\x0B; "),
+			'print "\\n"',
+			'print getcwd() . "\\n"',
+		);
+		$this->beforePrepareCommandJoin($command);
+		$command = join(self::COMMAND_SEPARATOR, $command);
+		
+		return "({$this->getInterpreterPath()} -e {$this->escapeShellArg($command)}) 2>&1" . PlatformTools::getStatusCommandPart();
 	}
 
 	/**

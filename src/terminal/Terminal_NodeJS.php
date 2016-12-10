@@ -3,6 +3,8 @@
 class Terminal_NodeJS extends Terminal_Shell
 {
 
+	const COMMAND_SEPARATOR = '; ';
+
 	/**
 	 * @return array
 	 */
@@ -25,7 +27,15 @@ class Terminal_NodeJS extends Terminal_Shell
 	 */
 	protected function prepareCommand($command)
 	{
-		return "{$this->getInterpreterPath()} -p {$this->escapeShellArg($command)}" . PlatformTools::getStatusCommandPart();
+		$command = array(
+			rtrim($command, "\t\n\r\0\x0B; "),
+			'process.stdout.write("\n")',
+			'process.stdout.write(process.cwd() + "\n")',
+		);
+		$this->beforePrepareCommandJoin($command);
+		$command = join(self::COMMAND_SEPARATOR, $command) . self::COMMAND_SEPARATOR;
+
+		return "({$this->getInterpreterPath()} -e {$this->escapeShellArg($command)}) 2>&1" . PlatformTools::getStatusCommandPart();
 	}
 
 	/**

@@ -3,6 +3,8 @@
 class Terminal_Python extends Terminal_Shell
 {
 
+	const COMMAND_SEPARATOR = "\n";
+
 	/**
 	 * @return array
 	 */
@@ -25,9 +27,17 @@ class Terminal_Python extends Terminal_Shell
 	 */
 	protected function prepareCommand($command)
 	{
-		$command = "import os\nimport sys\n{$command}\nprint\nprint(os.getcwd())\nprint(0)";
+		$command = array(
+			'import os',
+			'import sys',
+			$command,
+			"print('')",
+			'print(os.getcwd())',
+		);
+		$this->beforePrepareCommandJoin($command);
+		$command = join(self::COMMAND_SEPARATOR, $command);
 
-		return "{$this->getInterpreterPath()} -c {$this->escapeShellArg($command)}" . PlatformTools::getStatusCommandPart();
+		return "({$this->getInterpreterPath()} -c {$this->escapeShellArg($command)}) 2>&1" . PlatformTools::getStatusCommandPart();
 	}
 
 	/**

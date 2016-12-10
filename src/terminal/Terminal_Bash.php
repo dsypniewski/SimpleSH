@@ -20,33 +20,15 @@ class Terminal_Bash extends Terminal_Sh implements Terminal_AutocompleteInterfac
 	}
 
 	/**
-	 * @param string $command
-	 * @return string
+	 * @param array $command
 	 */
-	protected function prepareCommand($command)
+	protected function beforePrepareCommandJoin(&$command)
 	{
-		$beforeCommand = array();
-		$afterCommand = array();
 		if ($this->_environmentFilePath !== null) {
-			$beforeCommand[] = "source {$this->escapeShellArg($this->_environmentFilePath)}";
-			$afterCommand[] = "declare -p | grep -v '^declare -[^\\s]*r' >{$this->escapeShellArg($this->_environmentFilePath)} 2>/dev/null";
+			$escapedEnvironmentFilePath = $this->escapeShellArg($this->_environmentFilePath);
+			array_unshift($command, "source {$escapedEnvironmentFilePath}");
+			$command[] = "(declare -p | grep -v '^declare -[^\\s]*r') >{$escapedEnvironmentFilePath} 2>/dev/null";
 		}
-		
-		if (count($beforeCommand) > 0) {
-			$beforeCommand = join('; ', $beforeCommand) . '; ';
-		} else {
-			$beforeCommand = '';
-		}
-		if (count($afterCommand) > 0) {
-			$afterCommand = join('; ', $afterCommand) . '; ';
-		} else {
-			$afterCommand = '';
-		}
-
-		$command = rtrim($command, "\t\n\r\0\x0B; ");
-		$command = "({$beforeCommand}{$command}; return_value=$?; echo; {$afterCommand}pwd; echo \$return_value ) 2>&1";
-
-		return "{$this->getInterpreterPath()} -c {$this->escapeShellArg($command)}";
 	}
 
 	/**

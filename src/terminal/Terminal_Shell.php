@@ -3,6 +3,8 @@
 abstract class Terminal_Shell implements Terminal_ShellInterface
 {
 
+	const COMMAND_SEPARATOR = '';
+	
 	protected $_interpreterPath = null;
 	protected $_terminalId = null;
 	protected $_environmentFilePath = null;
@@ -122,6 +124,13 @@ abstract class Terminal_Shell implements Terminal_ShellInterface
 		$result->setData('debug:real_command', $preparedCommand);
 
 		return $result;
+	}
+
+	/**
+	 * @param array $command
+	 */
+	protected function beforePrepareCommandJoin(&$command)
+	{
 	}
 
 	/**
