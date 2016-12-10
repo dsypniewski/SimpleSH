@@ -157,7 +157,7 @@ class Terminal_Module extends Module
 	{
 		$escapedBinary = PlatformTools::escapeShellArg($binary);
 		if (PlatformTools::isWindows()) {
-			$binaryPath = Terminal_Shell::_execute("where {$escapedBinary} 2>/nul");
+			$binaryPath = Terminal_Shell::_execute("where {$escapedBinary} 2>nul");
 		} else {
 			$binaryPath = Terminal_Shell::_execute("which {$escapedBinary} 2>/dev/null");
 		}
