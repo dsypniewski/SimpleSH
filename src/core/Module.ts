@@ -24,6 +24,9 @@ abstract class Module {
 		return this.windowId;
 	}
 
+	public onExit(): void {
+	}
+
 	abstract build(): JQuery;
 
 	abstract onWindowFocus(): void;

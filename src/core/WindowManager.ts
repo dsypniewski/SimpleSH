@@ -253,6 +253,7 @@ class WindowManager {
 		}
 
 		let window = this.getWindowById(windowId);
+		window.getModule().onExit();
 		window.getHandle().remove();
 		window.getContainer().remove();
 		delete(this.windows[windowId]);
