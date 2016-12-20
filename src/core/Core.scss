@@ -164,6 +164,34 @@ div.windows-container {
       line-height: 30px;
       padding: 0 10px;
       cursor: default;
+      overflow: hidden;
+      
+      ul.menu-actions {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0 10px 0 0;
+        padding: 0;
+        list-style: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+        height: 30px;
+        
+        li {
+          float: left;
+          margin-left: 10px;
+        }
+        
+        li:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    div.menu:hover {
+      ul.menu-actions {
+        opacity: 1;
+      }
     }
 
     div.canvas {
