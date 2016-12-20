@@ -59,11 +59,14 @@ class WindowManager {
 			_this.switchWindow(windowId);
 		});
 		this.windowsContainer.on('mousedown', '.menu', function (this: Element, event: JQueryEventObject) {
-			let windowId: string = $(this).closest('.window').data('windowId');
+			let window = $(this).closest('.window');
+			let windowId: string = window.data('windowId');
 			_this.switchWindow(windowId);
 			_this.dragWindow = _this.getWindowById(windowId);
-			_this.dragOffsetX = event.offsetX;
-			_this.dragOffsetY = event.offsetY;
+			let windowOffset = window.offset();
+			let targetOffset = $(event.target).offset();
+			_this.dragOffsetX = targetOffset.left - windowOffset.left + event.offsetX;
+			_this.dragOffsetY = targetOffset.top - windowOffset.top + event.offsetY;
 		});
 		this.windowsContainer.on('dblclick', '.menu', function (this: Element) {
 			let windowId: string = $(this).closest('.window').data('windowId');
