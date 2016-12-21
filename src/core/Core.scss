@@ -221,4 +221,27 @@ div.windows-container {
   }
 }
 
+ul.context-menu {
+  position: absolute;
+  z-index: 10000;
+  list-style: none;
+  background-color: #1f1f1f;
+  margin: 0;
+  padding: 5px 0;
+  display: block;
+  border: 1px solid #404040;
+  
+  li {
+    padding: 5px 10px;
+  }
+  
+  li:hover {
+    cursor: pointer;
+    background-color: #343434;
+  }
+}
+
+ul.context-menu:empty {
+  display: none;
+}
 

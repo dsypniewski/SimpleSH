@@ -41,25 +41,24 @@ class WindowManager {
 		container.append(this.newWindowMenu);
 
 
-		this.taskBar.on('click', 'li.tab', function (this: Element, event: JQueryEventObject) {
-			event.stopPropagation();
-			_this.switchWindow($(this).data('windowId'));
+		this.taskBar.on('click', 'li.tab', function (event: JQueryEventObject) {
+			_this.switchWindow($(event.currentTarget).data('windowId'));
 		});
-		this.taskBar.on('click', '.close-window', function (this: Element, event: JQueryEventObject) {
-			event.stopPropagation();
-			_this.removeWindow($(this).parent('li').data('windowId'));
+		this.taskBar.on('click', '.close-window', function (event: JQueryEventObject) {
+			_this.removeWindow($(event.currentTarget).parent('li').data('windowId'));
 		});
-		this.newWindowButton.on('click', function (event: JQueryEventObject) {
-			event.stopPropagation();
+		this.newWindowButton.on('click', function () {
 			_this.showNewWindowPopup();
 		});
-		this.windowsContainer.on('click', '.window', function (this: Element, event: JQueryEventObject) {
-			event.stopPropagation();
-			let windowId: string = $(this).data('windowId');
+		this.windowsContainer.on('click', '.window', function (event: JQueryEventObject) {
+			let windowId: string = $(event.currentTarget).data('windowId');
 			_this.switchWindow(windowId);
 		});
-		this.windowsContainer.on('mousedown', '.menu', function (this: Element, event: JQueryEventObject) {
-			let window = $(this).closest('.window');
+		this.windowsContainer.on('mousedown', '.menu', function (event: JQueryEventObject) {
+			if (event.target !== event.currentTarget) {
+				return;
+			}
+			let window = $(event.currentTarget).closest('.window');
 			let windowId: string = window.data('windowId');
 			_this.switchWindow(windowId);
 			_this.dragWindow = _this.getWindowById(windowId);
@@ -68,8 +67,8 @@ class WindowManager {
 			_this.dragOffsetX = targetOffset.left - windowOffset.left + event.offsetX;
 			_this.dragOffsetY = targetOffset.top - windowOffset.top + event.offsetY;
 		});
-		this.windowsContainer.on('dblclick', '.menu', function (this: Element) {
-			let windowId: string = $(this).closest('.window').data('windowId');
+		this.windowsContainer.on('dblclick', '.menu', function (event: JQueryEventObject) {
+			let windowId: string = $(event.currentTarget).closest('.window').data('windowId');
 			_this.getWindowById(windowId).getContainer().toggleClass('maximized');
 		});
 		this.windowsContainer.on('mouseup', function () {
@@ -82,10 +81,9 @@ class WindowManager {
 			event.preventDefault();
 			_this.dragWindow.getContainer().offset({left: event.pageX - _this.dragOffsetX, top: event.pageY - _this.dragOffsetY});
 		});
-		this.newWindowMenu.on('click', 'a', function (this: Element, event: JQueryEventObject) {
+		this.newWindowMenu.on('click', 'a', function (event: JQueryEventObject) {
 			event.preventDefault();
-			event.stopPropagation();
-			let element: JQuery = $(this);
+			let element: JQuery = $(event.currentTarget);
 			let className: string = element.data('jsClass');
 			let moduleKey: string = element.data('moduleKey');
 			let moduleInstance: Module = _this.getModuleInstance(className, moduleKey);

@@ -38,11 +38,8 @@ class WindowObject {
 			label = text;
 		}
 		let _this = this;
-		let item = $('<li/>').append(label).on('mousedown', function () {
-			// Prevents dragging
-			event.stopPropagation();
-		}).on('click', function (this: Element, event: JQueryEventObject) {
-			callback($(this), event, _this);
+		let item = $('<li/>').append(label).on('click', function (event: JQueryEventObject) {
+			callback($(event.currentTarget), event, _this);
 		});
 		if (append) {
 			this.menuActions.append(item);
