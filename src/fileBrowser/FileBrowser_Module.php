@@ -45,8 +45,11 @@ class FileBrowser_Module extends Module
 
 	public function handleRequest()
 	{
-		if (false) {
-			$result = Handler::error('WTF?!');
+		if (isset($_GET['action'])) {
+			if ($_GET['action'] === 'download' and isset($_GET['file'])) {
+				$this->downloadFile($_GET['file']);
+			}
+			$result = Handler::error('Invalid action');
 		} else {
 			$result = $this->handleListRequest();
 		}
@@ -183,6 +186,22 @@ class FileBrowser_Module extends Module
 
 	public function getGroupName($gid)
 	{
+	}
+
+	/**
+	 * @param string $filePath
+	 */
+	protected function downloadFile($filePath)
+	{
+		if (!file_exists($filePath)) {
+			header('HTTP/1.0 404 Not Found');
+		} else {
+			header('Content-Type: application/octet-stream');
+			header('Content-Disposition: attachment; filename="' . basename($filePath) . '"');
+			readfile($filePath);
+		}
+		
+		die();
 	}
 
 }

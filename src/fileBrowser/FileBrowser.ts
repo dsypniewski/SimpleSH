@@ -35,14 +35,29 @@ class FileBrowser extends Module {
 		);
 		this.filterInput = $('<input/>').prop('type', 'text').addClass('filterInput').addClass('hidden');
 		let _this = this;
-		this.container.on('click', 'tr.directory', function (this: Element, event: JQueryEventObject) {
+		this.container.on('click', 'tr.directory', function (event: JQueryEventObject) {
 			event.preventDefault();
-			_this.changeDirectory($(this).data('path'));
+			_this.changeDirectory($(event.currentTarget).data('path'));
 		});
 		this.filterInput.on('change keyup paste', function () {
 			_this.updateFilter();
 		});
 		this.changeDirectory(this.directory);
+		
+		let directoryContextMenu = new ContextMenu(this.container, 'tr.directory');
+		directoryContextMenu.addCallbackAction('Open', function(context: JQuery) {
+			_this.changeDirectory(context.data('path'));
+		});
+		
+		let fileContextMenu = new ContextMenu(this.container, 'tr.file');
+		fileContextMenu.addCallbackAction('Download', function(context: JQuery) {
+			let urlData = {
+				'module': _this.getModuleKey(),
+				'action': 'download',
+				'file': context.data('path'),
+			};
+			window.open(_this.windowManager.getHandlerUrl() + '?' + $.param(urlData));
+		});
 
 		return $('<div/>').addClass('container').append(this.container).append(this.filterInput);
 	}

@@ -19,7 +19,7 @@ class Handler
 
 	public function handleRequest()
 	{
-		if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+		if ((count($_POST) === 0 and count($_GET) === 0) or !isset($_REQUEST['module'])) {
 			return;
 		}
 
@@ -27,10 +27,13 @@ class Handler
 
 		// Fix magic quotes
 		if (function_exists('get_magic_quotes_gpc') and @get_magic_quotes_gpc()) {
+			$_GET = array_map('stripslashes', $_GET);
 			$_POST = array_map('stripslashes', $_POST);
+			$_COOKIE = array_map('stripslashes', $_COOKIE);
+			$_REQUEST = array_map('stripslashes', $_REQUEST);
 		}
 
-		$moduleInstance = $this->getModule($_POST['module']);
+		$moduleInstance = $this->getModule($_REQUEST['module']);
 		if ($moduleInstance === false) {
 			$result = self::error('Unknown module');
 		} else {
