@@ -39,6 +39,10 @@ class FileBrowser extends Module {
 			event.preventDefault();
 			_this.changeDirectory($(event.currentTarget).data('path'));
 		});
+		this.container.on('click', 'tr.file', function (event: JQueryEventObject) {
+			event.preventDefault();
+			_this.openFile($(event.currentTarget).data('path'));
+		});
 		this.filterInput.on('change keyup paste', function () {
 			_this.updateFilter();
 		});
@@ -155,6 +159,12 @@ class FileBrowser extends Module {
 		$.post(this.windowManager.getHandlerUrl(), data, function (response: ObjectDict) {
 			_this.handleResponse(response);
 		}, 'json');
+	}
+
+	openFile(file: string): void {
+		let module = new FilePreview(this.windowManager, this.getModuleKey());
+		this.windowManager.createWindow(module);
+		module.openFile(file);
 	}
 
 	handleResponse(response: ObjectDict): void {

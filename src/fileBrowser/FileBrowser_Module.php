@@ -4,6 +4,7 @@ class FileBrowser_Module extends Module
 {
 
 	const MODULE_KEY = 'fileBrowser';
+	const MAX_VIEW_FILE_SIZE = 1048576;
 
 	protected $_groups = array();
 	protected $_users = array();
@@ -48,6 +49,8 @@ class FileBrowser_Module extends Module
 		if (isset($_GET['action'])) {
 			if ($_GET['action'] === 'download' and isset($_GET['file'])) {
 				$this->downloadFile($_GET['file']);
+			} else if ($_GET['action'] === 'view-file' and isset($_GET['file'])) {
+				$this->viewFile($_GET['file'], $_POST['charset']);
 			}
 			$result = Handler::error('Invalid action');
 		} else {
@@ -201,6 +204,29 @@ class FileBrowser_Module extends Module
 			readfile($filePath);
 		}
 		
+		die();
+	}
+	
+	/**
+	 * @param string $filePath
+	 * @param null|string $charset
+	 */
+	protected function viewFile($filePath, $charset = null)
+	{
+		if (strlen($charset) > 0) {
+			header("Content-Type: text/plain; charset=\"{$charset}\"");
+		} else {
+			header("Content-Type: text/plain");
+		}
+		if (!is_file($filePath)) {
+			echo "File not found";
+		} else if (!is_readable($filePath)) {
+			echo "File is not readable";
+		} else if (filesize($filePath) > self::MAX_VIEW_FILE_SIZE) {
+			echo "File is too big";
+		} else {
+			readfile($filePath);
+		}
 		die();
 	}
 

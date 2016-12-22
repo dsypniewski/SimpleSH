@@ -36,7 +36,7 @@ div.window.fileBrowser {
     background-color: white;
   }
 
-  tbody tr.directory {
+  tbody tr:hover {
     cursor: pointer;
   }
 
@@ -76,6 +76,12 @@ div.window.fileBrowser {
 
   tbody td {
     padding: 8px 10px;
+  }
+  
+  iframe.view-file {
+    width: 100%;
+    height: 100%;
+    border: none;
   }
 
 }
