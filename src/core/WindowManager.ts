@@ -50,7 +50,7 @@ class WindowManager {
 		this.newWindowButton.on('click', function () {
 			_this.showNewWindowPopup();
 		});
-		this.windowsContainer.on('click', '.window', function (event: JQueryEventObject) {
+		this.windowsContainer.on('mousedown', '.window', function (event: JQueryEventObject) {
 			let windowId: string = $(event.currentTarget).data('windowId');
 			_this.switchWindow(windowId);
 		});
