@@ -50,7 +50,7 @@ class FileBrowser_Module extends Module
 			if ($_GET['action'] === 'download' and isset($_GET['file'])) {
 				$this->downloadFile($_GET['file']);
 			} else if ($_GET['action'] === 'view-file' and isset($_GET['file'])) {
-				$this->viewFile($_GET['file'], $_POST['charset']);
+				$this->viewFile($_GET['file'], isset($_POST['charset']) ? $_POST['charset'] : null);
 			}
 			$result = Handler::error('Invalid action');
 		} else {
