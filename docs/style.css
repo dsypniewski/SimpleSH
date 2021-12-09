@@ -1,0 +1,178 @@
+body {
+	color: #dedede;
+	background-color: #242424;
+	font-family: 'Roboto Mono', Consoles, monospace;
+	font-size: 0.9em;
+	line-height: 1.4em;
+	margin: 0;
+}
+
+p {
+	margin: 0;
+	line-height: 1.5em;
+	text-align: justify;
+}
+
+h1 {
+	font-size: 1.5em;
+	line-height: 1.3em;
+	margin: 0;
+}
+
+h2 {
+	font-size: 1.3em;
+	line-height: 1.3em;
+	margin-top: 1.5em;
+	margin-bottom: 0;
+}
+
+a, a:visited {
+	color: #dedede;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+a:hover {
+	color: #909090;
+}
+
+.tag {
+	color: #E8BF6A;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.tag.open {
+	margin-bottom: 0.3em;
+}
+
+.tag.open:before {
+	content: '<';
+}
+
+.tag.open:after {
+	content: '>';
+}
+
+.tag.close {
+	margin-top: 0.3em;
+}
+
+.tag.close:before {
+	content: '</';
+}
+
+.tag.close:after {
+	content: '>';
+}
+
+.tag.void.open:after {
+	content: '';
+}
+
+.tag.void.close:before {
+	content: '';
+}
+
+.tag.void.close:after {
+	content: '/>';
+}
+
+.tag.void.open.close:before {
+	content: '<';
+}
+
+.tag.void.open.close:after {
+	content: '/>';
+}
+
+.tag + .tag {
+	margin-top: 0.3em;
+}
+
+.tag.inline {
+	margin: 0;
+}
+
+.tag > .attribute-name {
+	color: #dedede;
+}
+
+.tag > .attribute-value {
+	color: #A5C261;
+}
+
+.tag > .attribute-value:before,
+.tag > .attribute-value:after {
+	content: '"';
+}
+
+.tag-body {
+	padding-left: 1.3em;
+	border-left: 1px solid #333333;
+}
+
+.tag-body > :first-child {
+	margin-top: 0;
+}
+
+.tag-body > :last-child {
+	margin-bottom: 0;
+}
+
+.tag-body > ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	line-height: 1.4em;
+}
+
+#wrapper {
+	max-width: 960px;
+	width: 100%;
+	margin: 0 auto;
+	background-color: #2B2B2B;
+}
+
+#content {
+	padding: 2em;
+}
+
+.shortcut, .command {
+	color: #000000;
+	background-color: #a5a5a5;
+	padding: 0.05em 0.4em;
+	font-size: 0.85em;
+	border-radius: 0.3em;
+	white-space: nowrap;
+	font-weight: bold;
+	line-height: 1.5em;
+}
+
+.required {
+	color: #de0000;
+}
+
+a.screenshot {
+	margin: 0.3em 0 0;
+	padding: 0.5em;
+	line-height: 1em;
+	display: block;
+	background: #242424;
+}
+
+a.screenshot img {
+	width: 100%;
+	height: auto;
+}
+
+#footer {
+	margin: 1.5em 0 0;
+}
+
+#footer > .tag-body {
+	font-weight: bold;
+}

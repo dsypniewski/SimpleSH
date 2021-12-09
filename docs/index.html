@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>SimpleSH a PHP web shell</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"/>
+  <meta name="description"
+        content="SimpleSH a PHP web shell with sh, bash, php, perl, python, nodejs, cmd and powershell interpreters"/>
+  <meta name="keywords" content="SimpleSH,php shell,web shell,simple shell,webshell,php web shell,php webshell"/>
+  <link rel="canonical" href="https://dsypniewski.github.io/SimpleSH/"/>
+  <link rel="icon" type="image/png" href="/favicon.png"/>
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org/",
+      "@type": "SoftwareSourceCode",
+      "image": "https://dsypniewski.github.io/SimpleSH/img/screenshot.png",
+      "description": "SimpleSH a PHP web shell with sh, bash, php, perl, python, nodejs, cmd and powershell interpreters",
+      "programmingLanguage": "PHP,TypeScript,SCSS",
+      "runtimePlatform": "PHP,JavaScript",
+      "codeRepository": "https://github.com/dsypniewski/SimpleSH",
+      "targetProduct": {
+        "@type": "SoftwareApplication",
+        "name": "SimpleSH",
+        "alternateName": "Simple Web Shell",
+        "keywords": "SimpleSH,php shell,web shell,simple shell,webshell,php web shell,php webshell",
+        "applicationCategory": "Tools",
+        "url": "https://dsypniewski.github.io/SimpleSH/",
+        "downloadUrl": "https://github.com/dsypniewski/SimpleSH/releases/latest",
+        "operatingSystem": "Linux,Windows",
+        "license": "https://github.com/dsypniewski/SimpleSH/blob/master/LICENSE.txt",
+        "featureList": "Bash autocomplete, Dynamic output, Multiple windows, Command history, Multiple interpreters, Automatic focus on command input, Directory browser",
+        "isAccessibleForFree": "True",
+        "author": {
+          "@type": "Person",
+          "name": "Damian Sypniewski"
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700&amp;subset=latin-ext" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+<div id="wrapper">
+  <div id="content">
+    <div class="tag open">html</div>
+    <div class="tag-body">
+      <div class="tag open">head</div>
+      <div class="tag-body">
+        <h1>
+          <span class="tag open inline">title</span>
+          SimpleSH a&nbsp;PHP&nbsp;web&nbsp;shell
+          <span class="tag close inline">title</span>
+        </h1>
+        <div class="tag open close void inline">meta
+          <span class="attribute-name">name=</span><span class="attribute-value">description</span>
+          <span class="attribute-name">content=</span><span class="attribute-value">SimpleSH a PHP web shell with sh, bash, php, perl, python, nodejs, cmd and powershell interpreters</span>
+        </div>
+      </div>
+      <div class="tag close">head</div>
+      <div class="tag open">body</div>
+      <div class="tag-body">
+        <h2 id="download">
+          <span class="tag open inline">h2</span>
+          Download
+          <span class="tag close inline">h2</span>
+        </h2>
+        <div class="tag open">p</div>
+        <div class="tag-body">
+          <p>You can find source code on
+            <a href="https://github.com/dsypniewski/SimpleSH">GitHub</a> and download the latest release
+            <a href="https://github.com/dsypniewski/SimpleSH/releases/latest">here</a>.
+          </p>
+          <p>More updates and information coming soon.</p>
+        </div>
+        <div class="tag close">p</div>
+
+        <h2 id="screenshots">
+          <span class="tag open inline">h2</span>
+          Eye candy
+          <span class="tag close inline">h2</span>
+        </h2>
+        <a href="/img/screenshot.png" target="_blank" class="screenshot">
+          <img src="/img/screenshot-preview.png" alt="preview">
+        </a>
+
+        <h2 id="features">
+          <span class="tag open inline">h2</span>
+          Features
+          <span class="tag close inline">h2</span>
+        </h2>
+        <div class="tag open">p</div>
+        <div class="tag-body">
+          <p><a href="#bash-autocomplete">Bash autocomplete</a></p>
+          <p><a href="#dynamic-output">Dynamic output</a></p>
+          <p>Multiple windows</p>
+          <p>Command history</p>
+          <p><a href="#interpreters">Multiple interpreters</a></p>
+          <p>Automatic focus on command input when typing</p>
+          <p>Protection against accidental closing</p>
+          <p>Directory browser</p>
+        </div>
+        <div class="tag close">p</div>
+
+        <h2 id="bash-autocomplete">
+          <span class="tag open inline">h2</span>
+          Bash autocomplete
+          <span class="tag close inline">h2</span>
+        </h2>
+        <div class="tag open">p</div>
+        <div class="tag-body">
+          <p>
+            You can use
+            <span class="shortcut">Tab</span> to complete commands and paths just like in real command line,
+            with one small difference that single
+            <span class="shortcut">Tab</span> key press works as single and double
+            <span class="shortcut">Tab</span> on real console.
+          </p>
+        </div>
+        <div class="tag close">p</div>
+        <h2 id="interpreters">
+          <span class="tag open inline">h2</span>
+          Interpreters
+          <span class="tag close inline">h2</span>
+        </h2>
+        <div class="tag open">p</div>
+        <div class="tag-body">
+          <p>Change interpreter with <span class="command">set_shell &lt;interpreter_name&gt;</span>
+          </p>
+          <p>Available interpreters: sh, bash, php, perl, python, nodejs, cmd, powershell</p>
+        </div>
+        <div class="tag close">p</div>
+
+        <h2 id="dynamic-output">
+          <span class="tag open inline">h2</span>
+          Dynamic output
+          <span class="tag close inline">h2</span>
+        </h2>
+        <div class="tag open">p</div>
+        <div class="tag-body">
+          <p>
+            Available for sh and bash
+          </p>
+          <p>
+            Enable or disable with <span class="command">enable_dynamic_output</span> /
+            <span class="command">disable_dynamic_output</span>
+          </p>
+          <p>
+            When dynamic output is enabled the commands are run in the background and each 0.5s console is
+            updated.
+          </p>
+          <p>You can break command execution with <span class="shortcut">Ctrl + C</span></p>
+          <p><span class="required">*</span> requires writable temporary directory on server</p>
+        </div>
+        <div class="tag close">p</div>
+
+        <h2>
+          <span class="tag open inline">h2</span>
+          Global shortcuts
+          <span class="tag close inline">h2</span>
+        </h2>
+        <div class="tag open">p</div>
+        <div class="tag-body">
+          <p>
+            <span class="shortcut">Ctrl + Q</span> - close window
+          </p>
+          <p>
+            <span class="shortcut">Ctrl + Insert</span> - new window popup
+          </p>
+          <p>
+            <span class="shortcut">Ctrl + Alt + Left</span> /
+            <span class="shortcut">Ctrl + Alt + Right</span> - switch between windows
+          </p>
+          <p>
+            <span class="shortcut">Ctrl + Alt + F1</span> ..
+            <span class="shortcut">Ctrl + Alt + F12</span> - switch between windows
+          </p>
+          <p>
+            <span class="shortcut">Shift + Up</span> - maximize window
+          </p>
+          <p>
+            <span class="shortcut">Shift + Down</span> - revert maximize window
+          </p>
+          <p>
+            <span class="shortcut">Shift + Left</span> - stick window tho the left side
+          </p>
+          <p>
+            <span class="shortcut">Shift + Right</span> - stick window tho the right side
+          </p>
+        </div>
+        <div class="tag close">p</div>
+
+        <h2>
+          <span class="tag open inline">h2</span>
+          Terminal shortcuts
+          <span class="tag close inline">h2</span>
+        </h2>
+        <div class="tag open">p</div>
+        <div class="tag-body">
+          <p>
+            <span class="shortcut">Tab</span> - invoke autocomplete
+          </p>
+          <p>
+            <span class="shortcut">Enter</span> - execute command
+          </p>
+          <p>
+            <span class="shortcut">Esc</span> - clear command line
+          </p>
+          <p>
+            <span class="shortcut">Up</span> &
+            <span class="shortcut">Down</span> - move through command history
+          </p>
+          <p>
+            <span class="shortcut">Home</span> &
+            <span class="shortcut">End</span> - move to command start / end
+          </p>
+          <p>
+            <span class="shortcut">Ctrl + Home</span> /
+            <span class="shortcut">Ctrl + End</span> - scroll console to top / bottom
+          </p>
+          <p>
+            <span class="shortcut">Ctrl + C</span> - break dynamic output command / clear command line /
+            copy
+          </p>
+          <p>
+            <span class="shortcut">Ctrl + V</span> - always pastes into command line
+          </p>
+          <p>
+            <span class="shortcut">Ctrl + A</span> - always selects whole command line content
+          </p>
+          <p>
+            <span class="shortcut">ScrollLock</span> - lock output scrolling (works great with dynamic
+            output)
+          </p>
+        </div>
+        <div class="tag close">p</div>
+
+        <h2>
+          <span class="tag open inline">h2</span>
+          FileBrowser shortcuts
+          <span class="tag close inline">h2</span>
+        </h2>
+        <div class="tag open">p</div>
+        <div class="tag-body">
+          <p>
+            <span class="shortcut">Up</span> &
+            <span class="shortcut">Down</span> - move in directory listing
+          </p>
+          <p>
+            <span class="shortcut">Enter</span> - enter directory
+          </p>
+        </div>
+        <div class="tag close">p</div>
+        <div id="footer">
+          <div class="tag open">footer</div>
+          <div class="tag-body">2013 - $(date +%Y) <a href="https://damian.sypniew.ski/">Damian Sypniewski</a></div>
+          <div class="tag close">footer</div>
+        </div>
+      </div>
+      <div class="tag close">body</div>
+    </div>
+    <div class="tag close">html</div>
+  </div>
+</div>
+</body>
+</html>
